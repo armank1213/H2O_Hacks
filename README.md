@@ -1,0 +1,6 @@
+AquaSaver – Smart Water Usage 
+
+AquaSaver is a React Native mobile app designed to help users make smarter decisions about their water use. By combining real-time weather data, rebate discovery, and personal tracking tools, AquaSaver empowers users to conserve water efficiently and responsibly. When users open the app, it requests location access using Expo’s location API. With this information, it calls the Open-Meteo API to retrieve real-time precipitation forecasts based on the user’s GPS coordinates. Based on whether it’s expected to rain, the app displays relevant water-saving tips, such as reminders to turn off sprinklers or suggestions to wash your car in the rain.
+
+In addition to weather-based suggestions, AquaSaver includes a built-in tracker to help users monitor their water usage, and a rebate finder that displays city-specific rebate programs for appliances like high-efficiency toilets, washers, irrigation controllers, and more. The dashboard serves as a central hub, offering intuitive access to these tools, including timers and comparison features. The app is built with React Native using Expo Router and utilizes JavaScript, Open-Meteo, and Expo Location APIs for seamless functionality. AquaSaver is lightweight, permission-aware, and optimized for ease of use.
+
