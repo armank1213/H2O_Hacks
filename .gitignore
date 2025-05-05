@@ -35,3 +35,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Firebase
+firebaseConfig.jsx
+
+# OpenAI key
+key.env

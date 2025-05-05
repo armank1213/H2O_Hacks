@@ -1,95 +1,121 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { TextInput, Button, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { useRouter } from 'expo-router'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 const Login = () => {
-    const router = useRouter();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        console.log('Login button pressed');
-        // Logic needs to be added here for authentication
+  const handleLogin = () => {
+    if (!email.trim() || !password.trim()) {
+      alert('Please enter both email and password.');
+      return;
     }
+    router.push('/dashboard');
+  };
 
-    const handleForgotPassword = () => {
-        Alert.alert('Forgot Password', 'Password reset link has been sent to your email.');
-        // Logic needs to be added here for password reset
-    }
+  const handleSignup = () => {
+    router.push('/signup');
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back</Text>
+    <ImageBackground
+      source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1050&q=80' }}
+      style={styles.background}
+      blurRadius={3}
+    >
+      <View style={styles.overlay}>
 
-      <TextInput 
-        style={styles.input} 
-        placeholder='Username'
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize='none'
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder='Password'
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCorrect={false}
-      />
+        <Text style={styles.title}>Welcome to FlowIQ</Text>
 
-      <TouchableOpacity style={styles.buttonContainer} onPress={handleLogin}>
-        <Button title='Login' color='#3498db' style={styles.buttonText}/>
-      </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#d0e6f7"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
 
-      <TouchableOpacity onPress={handleForgotPassword}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#d0e6f7"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <TouchableOpacity onPress={() => router.push('/signup')}>
-        <Text style={styles.footerText}>Don't have an account? Sign up</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+          <Text style={styles.signupText}>Don't have an account? Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
+  );
+};
 
 export default Login;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-      },
-      title: {
-        fontSize: 28,
-        fontWeight: '600',
-        marginBottom: 30,
-        textAlign: 'center',
-      },
-      input: {
-        height: 50,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 12,
-        marginBottom: 16,
-      },
-      forgotText: {
-        textAlign: 'center',
-        color: '#3498db',
-        marginBottom: 20,
-        textDecorationLine: 'underline',
-      },
-      buttonContainer: {
-        marginBottom: 20,
-      },
-      footerText: {
-        textAlign: 'center',
-        color: '#3498db',
-        marginTop: 10,
-        textDecorationLine: 'underline',
-      },
-})
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  overlay: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 123, 255, 0.3)', // translucent water blue
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 40,
+    textShadowColor: '#000',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  input: {
+    height: 52,
+    borderColor: '#ffffffaa',
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 20,
+    color: '#fff',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  loginButton: {
+    backgroundColor: '#007aff',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 16,
+    shadowColor: '#007aff',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  loginText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  signupButton: {
+    alignItems: 'center',
+  },
+  signupText: {
+    color: '#e3f2fd',
+    textDecorationLine: 'underline',
+    fontSize: 15,
+  },
+});

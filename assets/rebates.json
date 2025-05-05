@@ -1,0 +1,195 @@
+[
+    {
+      "city": "Stockton",
+      "zip": "95202",
+      "appliance": "High-Efficiency Toilet",
+      "rebate": "$50 per toilet (limit 2)",
+      "provider": "California Water Service",
+      "url": "https://www.calwater.com/conservation/rebates/"
+    },
+    {
+      "city": "Los Angeles",
+      "zip": "90001",
+      "appliance": "High-Efficiency Washing Machine",
+      "rebate": "$150 rebate",
+      "provider": "LADWP",
+      "url": "https://www.ladwp.com/ladwp/faces/ladwp/residential/r-savingmoney/r-sm-rebates"
+    },
+    {
+      "city": "Los Angeles",
+      "zip": "90001",
+      "appliance": "Premium High-Efficiency Toilet",
+      "rebate": "$150 rebate",
+      "provider": "LADWP",
+      "url": "https://www.ladwp.com/ladwp/faces/ladwp/residential/r-savingmoney/r-sm-rebates"
+    },
+    {
+      "city": "San Diego",
+      "zip": "92101",
+      "appliance": "Smart Irrigation Controller",
+      "rebate": "Up to $200",
+      "provider": "San Diego Water Authority",
+      "url": "https://www.socalwatersmart.com/en/residential/"
+    },
+    {
+      "city": "San Diego",
+      "zip": "92101",
+      "appliance": "Rotating Sprinkler Nozzles",
+      "rebate": "$2 per nozzle",
+      "provider": "San Diego Water Authority",
+      "url": "https://www.socalwatersmart.com/en/residential/"
+    },
+    {
+      "city": "Sacramento",
+      "zip": "95814",
+      "appliance": "Toilet Replacement",
+      "rebate": "Free toilet or $125 rebate",
+      "provider": "City of Sacramento Utilities",
+      "url": "https://www.cityofsacramento.org/Utilities/Water-Conservation/Rebates"
+    },
+    {
+      "city": "Fresno",
+      "zip": "93721",
+      "appliance": "High-Efficiency Clothes Washer",
+      "rebate": "$100 rebate",
+      "provider": "Fresno Water Division",
+      "url": "https://www.fresno.gov/publicutilities/water-conservation/"
+    },
+    {
+      "city": "San Jose",
+      "zip": "95110",
+      "appliance": "Lawn Conversion",
+      "rebate": "$3 per sq. ft (up to 2,000 sq. ft)",
+      "provider": "San Jose Municipal Water System",
+      "url": "https://www.valleywater.org/saving-water/rebates-programs/landscape-rebates"
+    },
+    {
+      "city": "San Jose",
+      "zip": "95110",
+      "appliance": "High-Efficiency Toilet",
+      "rebate": "$125 rebate",
+      "provider": "San Jose Municipal Water System",
+      "url": "https://www.sjenvironment.org/rehab-toilets"
+    },
+    {
+      "city": "Oakland",
+      "zip": "94612",
+      "appliance": "Efficient Showerhead",
+      "rebate": "Free kits available",
+      "provider": "East Bay MUD",
+      "url": "https://www.ebmud.com/water/conservation-and-rebates/"
+    },
+    {
+      "city": "Riverside",
+      "zip": "92501",
+      "appliance": "Weather-Based Irrigation Controller",
+      "rebate": "Up to $200",
+      "provider": "Riverside Public Utilities",
+      "url": "https://www.riversideca.gov/utilities/residents/rebates-programs"
+    },
+    {
+      "city": "Long Beach",
+      "zip": "90802",
+      "appliance": "High-Efficiency Toilet",
+      "rebate": "$100 per toilet",
+      "provider": "Long Beach Water Department",
+      "url": "https://lbwater.org/save-water"
+    },
+    {
+      "city": "Santa Barbara",
+      "zip": "93101",
+      "appliance": "Smart Irrigation Controller",
+      "rebate": "Up to $200",
+      "provider": "Santa Barbara Water Conservation",
+      "url": "https://www.santabarbaraca.gov/gov/depts/pw/resources/conservation/rebates.asp"
+    },
+    {
+      "city": "Santa Rosa",
+      "zip": "95401",
+      "appliance": "High-Efficiency Washer",
+      "rebate": "$100 rebate",
+      "provider": "City of Santa Rosa",
+      "url": "https://srcity.org/1478/Water-Use-Efficiency"
+    },
+    {
+      "city": "Berkeley",
+      "zip": "94704",
+      "appliance": "Toilet Replacement",
+      "rebate": "$75 per toilet",
+      "provider": "EBMUD",
+      "url": "https://www.ebmud.com/water/conservation-and-rebates/rebates/toilet-rebates/"
+    },
+    {
+      "city": "Irvine",
+      "zip": "92602",
+      "appliance": "Lawn to Garden",
+      "rebate": "$3 per sq. ft (up to 3,000 sq. ft)",
+      "provider": "Irvine Ranch Water District",
+      "url": "https://www.irwd.com/services/conservation"
+    },
+    {
+      "city": "Anaheim",
+      "zip": "92805",
+      "appliance": "Rain Barrel",
+      "rebate": "$35 per rain barrel (max 2)",
+      "provider": "Anaheim Public Utilities",
+      "url": "https://anaheim.net/DocumentCenter/View/14715/Water-Rebate-Flyer"
+    },
+    {
+      "city": "Modesto",
+      "zip": "95354",
+      "appliance": "Weather-Based Irrigation Controller",
+      "rebate": "$75 rebate",
+      "provider": "City of Modesto",
+      "url": "https://www.modestogov.com/1326/Rebates"
+    },
+    {
+      "city": "Chula Vista",
+      "zip": "91910",
+      "appliance": "Rotating Sprinkler Nozzles",
+      "rebate": "$2 per nozzle",
+      "provider": "Otay Water District",
+      "url": "https://otaywater.gov/customer-service/water-conservation/"
+    },
+    {
+      "city": "Bakersfield",
+      "zip": "93301",
+      "appliance": "High-Efficiency Clothes Washer",
+      "rebate": "$100 rebate",
+      "provider": "California Water Service - Bakersfield",
+      "url": "https://www.calwater.com/conservation/rebates/"
+    },
+    {
+      "city": "Pasadena",
+      "zip": "91101",
+      "appliance": "Smart Irrigation Controller",
+      "rebate": "Up to $200",
+      "provider": "Pasadena Water & Power",
+      "url": "https://www.cityofpasadena.net/water-and-power/residential-rebates/"
+    },
+    {
+      "city": "Fontana",
+      "zip": "92335",
+      "appliance": "Lawn Replacement",
+      "rebate": "$3 per sq. ft",
+      "provider": "Inland Empire Utilities Agency",
+      "url": "https://www.ieua.org/rebates/"
+    },
+    {
+      "city": "Escondido",
+      "zip": "92025",
+      "appliance": "High-Efficiency Toilet",
+      "rebate": "$100 per toilet",
+      "provider": "City of Escondido",
+      "url": "https://www.escondido.org/water-conservation"
+    },
+    {
+      "city": "Ventura",
+      "zip": "93001",
+      "appliance": "Weather-Based Irrigation Controller",
+      "rebate": "$150 rebate",
+      "provider": "Ventura Water",
+      "url": "https://www.cityofventura.ca.gov/1092/Water-Conservation"
+    }
+  ]
+  

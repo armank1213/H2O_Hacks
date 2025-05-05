@@ -1,0 +1,158 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Image, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+
+const APPLIANCES = {
+  rf28r7351sr: {
+    model: 'Samsung RF28R7351SR',
+    type: 'Refrigerator',
+    imageUrl: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSKcfw71Qanb1i4dXIRNT0TakOq0F8xvy5KqYVdrK9ttQi8iB-GvgXxd6RAdCXZAyk-7CyxydQHtFPhivNiJjOdxMq72Q78ZR0QkHjGNT4PRr0_tbR2jVF09K9yoct03H1ugatS8QUE&usqp=CAc',
+    waterUsage: '7.5 gallons/day (indirect from icemaker & water dispenser)',
+    betterModel: {
+      model: 'Samsung RF23A9671SR',
+      imageUrl: 'data:image/webp;base64,UklGRv4GAABXRUJQVlA4IPIGAAAwOwCdASqMAPUAPj0aiUMiIaEXWXWkIAPEtLagrLNQgZ2Ojf/4zjL46O4r8n39s+zn6ov77/sekD6W/3HuF/yn+wf7zr8Dyx/KQ7kucMNDFB3JifgHI8WqM2/TMPiBqf9ekbrVeXFDnr34jS6uDvzUxELzLnYkMn+vYi229Ju8t5VuUPx1oKH575pTRnRrhFCd79y2YbPosy/mGSTgeqlAcHGluUARJVdkQqA1Q6TP6BacMoTN4Il0509hytoSMNmcZMkaSQio5ydR5OWbAQN/37XPMrIG4suKljza4VhOTlk3Pm+XhsojJX50t5869KkXw4Lmwof5Mu81lhqGXMwHIvrft40HYmd/YRuxTan1FwIMrGHvWrirELquP2kAQz3q4BQrTIaF9oepTapbyxc0TrI3GkxNgkMF1HZRhZqFUyt6hOy7oJ4WzE2h6gm1EbQvWSrugPCYNN16mqQQROzodgl3uQ9TgTEQO6z16ATTDp2zggUxl6g+dQLRifH6p4ugSoGJhJ/+YQ0NVYTxCnBTUlcxtrX3GU82WF/mO45Ibcib+lqtiQR4oblsPZB5yZ+OWRuQXhthFCgKkceqmBR+Iq/YI9/rEpoWpQT5XCFJHxiO8J8NCClUh+9wKbI/ePWAAAD+/4Jp+E1kk36jSzCORSZp2TMQ0RA9+So4mfcSOkgOjzG1Q87FNT7QFpEyZJxujdFNB+oGH/cd8KA9NKfQaXXiEEkrd/eKvTs8v8OlV7q+L+zT8sJp4SbtmgQU+Zd9jeRDB5sfiY7uPbJcsnmbfr//EJReP/+WUqc4KcCllhcelCVvA/8lGl6nAMtSNm16E4Z6c9BvVxSJd1zexlS6w+c5BAOhTBDqbVN+XgNTMZFw5EZX11ZvTEIAMSRliyXti9uR2VxUS/znX83O8WTmYc8/2SCeYymjWOfUiitrGoC+S22FxpVppsBQegC34oqDtYl59E8HTmMUc6lGRAwypV0pL5lgny2GHCOkkldchnggEVjC0i3gNDrtJkuZoiZVCbOKGvZvlyEejkji/QbCC/dzfNZqz0BpUIegOwWRVk1EG7qnvPWS547G7Dj7LAS542oW/A/94l7dRmfSaHIjDDsAX+9TMwGHOuUfx5JmByTFd20SeFkfpeWkTA6nQWvSTjQbv8g1xoPvZsJXmFyyHWH47ruzF4ajeVCasWsymCrbuXcGiOmb5B3j9qM4THofrTk5J/dc0/pAOvxT/oatLdYtnXQnPTECnY/aoIE8CE8Q+rD+XXNKihxhPIrSmJAL5aVGHsxQLcPEXAgiIWDYXxBfLaGRBXHrTHMhQHUB/3yb3vj0NYkVlxE0jqmLFlYzye9HuP2VGIU1UjOUNaOY4Cw9O5jp0//ztSntznOuxkLH+2o2v/sxvcR4emhZ+mPPvt6jHn3++UnmD5Bq/mV+jSlB6kp7Fz9ZncvoHvgO3B4VNQNUZE8bAmKOAALw9LGkmpMJ2Xs+snbxsb+J77EjI6bYQxM6xygwlbLof5aJDR+fz0yiUaIe3lB7w/Ue1MYof9rwSH+dK6YeOux/T/5npLfbFlxEyqySlTs1/CvTTwNNQBWUzmOm+DReB8N6UF4UKcHExWH2RKEeb8IgscDzmsBgM47NhcIPMR1SuL6Dg31G+qrwkm5//fZG8z9OiWq3QXJ6a9JtNV7CeEBjRZU8t4l8pWEonCgDWwms/6EhAH2eeKztgtq4182rA2krSgrDwnNdyb9TpWNpkcK1kHize4z8aCprQK9ZHElb0mLSfznl6PVmNe/1tHXMKW0+yz5/xyrT1htIpl2oOZKICE+dPe36Ec4pQl0oR0T9vkwvsy/UCuwIpaaXCNH4rx6FqTXXK5PGG/eHECm2mljuMNEOrpdv9f3+cmrmrP3KJGrMtCTz9cALBl50r04Xfou7U0/CCuu8bHVh38vThATIpUpmgfPJCgbd7oUOzq5YG94N0GZuy1hp1GdCAE2OFP+mK4Watkd1Ouz6VR/kL3uGcjIteF6CoDPXFjj8dhuwiWWnb4384NvBADJgo8DTI5EiriJSmRXvIRmtRG4gNeSr5b4BZIocZjPyD52VIbqoJR6dasAWE4SotxH6FKHrUKB75u6/+LLEQOMVcIb3ZyJNjM2Y76R9qU/he8ioZgU3Wn9ID9X94J+Bujs1nAEuDfCVxN/i0siif/eAWowwuiU9H/63HenQ5t5lqaZoz7QCKv1NCPL4qT9nyukDWdGJHQNE3f6MGnm+lgIwGd3Jc3+B8Rj4cvb8er1z6v/gT6o4PoZQ3g5SbH/PkCn6qrBH5Uhjn5kUhAj9aJFAExqg0xWKm3Q/Ppe/77n38nyz2h3FKhQdd3J9knWOfbW97CM4Q/XimZ4AAA==',
+      waterUsage: '6 gallons/day (Energy Star certified)',
+      description: 'The RF23A9671SR is Energy Star certified with 20% improved water filtration efficiency and lower dispenser waste.'
+    }
+  },
+  wtw5000dw: {
+    model: 'Whirlpool WTW5000DW',
+    type: 'Top Load Washer',
+    imageUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEhUQEBAQEBAPEBUVDxUQFQ8PFRAPFRUWFhYVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGBAPFysdHR0tLS0tLS0tLSstLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0rKy0tLS0tLS0tLS0tLSstLf/AABEIASwAqAMBIgACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAACAAEDBAUGB//EAEYQAAEDAQQFCAYHBgYDAQAAAAEAAhEDBBIhMQVBUVKRBhMiYXGBodEHFDJTk7EVQmKSwdLwIzNygqLhQ2Nzo7LCROLxJP/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/8QAHREBAQEAAwEBAQEAAAAAAAAAAAERAiExEgNBUf/aAAwDAQACEQMRAD8A8UpjqK2dG6ItLnCKFXEjNrhr6wqf0xavf1OK9j0ZaDUo06vvKbHTO1oUtWIrKxzGlrhBGYXE6T0xWa+owHAOcB2SQut0hpCKhMg7Y6sFwung42ioWiQSDr1gFZkL25otgIIWmbCdTPBxQCzuGqB2Fb1GeApGmOK0G0CRm39d6B9D+Hh/dTVxLovKv/A35rY5NslrgddWn84WVYIAeC6mwOAmRiYOGtdFyNHtC80gOBAERiM/BSery8jE5UiCBsqOWEum0rQ517g8sEPcRJLdZ61X+iaFz95SD5w/aOxHGE0xhA/JMVrfRTfeUviDzSOiW+8o/EHmmpjHatHQv78fzfJWG6Ibv0fit81Zs9gFJ19rqRcNlRrvAK6Y1K37xv8AG35hQP19qJ7jfa52V4EnUo3LLa3ok41f9Nv/ADCECGAbbUz8Sq1kPTx6u5buj7PSI6biblW804+0IGMKsf1c5Un9nTG2sz8UlHyhriq6g1pBY2rfeRkIylMrSPLmr1XkJRdUsdN5qey5zQLwHRa4gCOxeUMXono1pNqUage8gU6vREuwvNBOA6wlIvco3NFQXRBjpZrj9NQ5+JzaPJdtytpNDWvGYME9WrBcNpR2LT1FSDEq4EicjsUd8qS1e0e5QrSLFB+9JHVgkCU1A4IH1diDQ0axri68MmEidoIXR8j3w9wERInVtXLaLebz/wDSd8wt3k2KZL3VSLou4GYMzqWb017A6YkvDW4F9W6JE5mEel9GWizUS81abmBwBAYA6SYzKqaYd0ZbIh0tjCNkLJr22q8XX1aj27HPc4SOolIXoHrb9o4BL1x+0cAoUlcZ1O22OGzgtLRFQuJJjLUIWLC2tCZH9a0qxqA9OdQaeMJyVCGVG4kXg4ZjMdoTOqdTuBWG1mwHpHrMdvUt+zNLWxMGSTEaysWlYnMLDevMc+8Q0YzEe1qWu+tdiFqcpms3jdwVqcSAyfbOOA9kYlJVRXJqZGCA0d5xSSWXw+bPXnTF3Po5JpurCoKzGPa0tLWvhzmkz4OC5ZrrovOw3RtPkuo5DWtzrUHPl7eacBJIAwEAdWC1fGXS8qns9Xlt83nDF8besyuC0qMv1+sl6pbrG+00306TW3i3C8cAesrnK3o4ttQAX7OO17vwasxa8ztWfcoV6VV9E1rJxtFmaR11D/1TD0RWnXaqHcHn8FpHnIOBQL05vojq67ZSHYx3miHoidrtrO6mfzKjzexGCethHyW1oK0vp37ri2QJjDKV2lL0TBv/AJrcowp/+yt2T0ZtZI9cBnZTGH9Sxzmxvjcrz7SrrzQSZkzPasqtZHNDXFpDXzdJydGxetv9GjHCDanENGMU/E4qCp6LqN3C01CcYlnRnZmk6S9vIyEy3LZoltN7qb2uDmOIcJ1hReoU/tcVdTGUNi2dEthh/W1AzR9M6ncVepUWtaQ2YwzMqVY2GUwGid0KF7BqWnzYugRqCqVWBcXZUbVuuALnNbB6TWh8HVIkIzaSZZfFQAiHBpZqnIlTNYqdoZdJIGefarb1jMnetDRxl7cZN7EdQEykm0D0nzutPHJJdfxnTH6XsFe08yDfuk5RdZg7ZgMSpOR3r9qtALajvVWGapcGBsYwwQBLlnWWzstNYOtVdlCgwCN52shgHbi4r1LR9ustGm1lGBTaOjdBiNuWPaqw1qNJjBdYD35k9aMtWf8AS9EYyeCkpaWpvIDZJPVCC04agJJUbm7SOM/JVNI6QLWkiYyAGBcTt6lSsdrk3oaGHU7ouZOqZh2OGCzeTU4tZwG3w/ulTe3VBVW12sUxewOIEZKvo+0ugufUaW3g2HXQ6XOhpbGeqe1T6rU4xptIzg8R5KTnIEXe/XxhM0KO31+bpvqZ3GOdHYCVPqr8xNT0i6neaCBfbDgS32ew5JxaSAW4wSDtxGsYLnm2hj7z3e04T0AOk4xOvKJ+SvaIqg3qQcHCmRBaQ6AZ6JjYQe4hNPmKeluTNktT+dqsqXyACWPLJjaIzWZV5C2LetLZ/wAxp+bV2EdqrWiqLwph7WvLS7GJLQRMDWcQn0Y5B3o/s59i01h/EGO+UKtW5BVGwWVmv2h0snwjxXYWWq6+WOLiIkOLSAOqcjn4I7XV+q0tLsCZOQxxgGTkrqY4u1aPrUcKjSNh1HsIwKpOZOorvLLWvg03tBGOBBuvbrMHLErD0zYBRcC0Hm3+zON0jNpWLMbnLXNc0VWrMlbL29Sp1qB1wpqloKjBcdsD5pLPqWurQcCwBzSYe0yJG0HUkvR+dny4c/V0ss0D/wDPJ2lxy2Iud1MljGgCASQFCBq/ugtJjoAjAdI5wdnWdSwq3Y9KBj+m43ADJJnvxXWaHrtqA1GmRADThiHYzh1Beavol5NPGXYYYwV2PIujVo2W68dPnH3QZbgIgY9/FL4Rv22jzjXMBuk5EZgjIrDs+jbU57RWcwMpuBhkjnCMpnV1LWForYDm2kzj0sAMda0rKSWm81odOAkOjvhZaVrbYjWplhJB1FsS1wyKzdH6CrMeH16pqXDNNoAa0OyvHaV0Tb0TDRsJjxhS1Th3p50u9lTKVRoIIOIIggxiFGHJ3AnJxblld4YjWsta5WtybtNM3KFpptoz0ecYXVKbd0OBxGyVvaF0a2zsuAue5xvVHmJe84Se4DgrfNn3juFLend2dHs68UdNpBkvcc8CGRiZGQ1ZfqVe06FRtLHlzWva4sMPAIJadhjJZmmdFmvdcyoaVamSabwJzzBGsHDgptH6IpUHvey9NUy68ZDcZhuwSVoCERlWKxVWm/WqmrUuhuRa0NGwTn19SraTsFY1GV6BbzjMC15Ia9uYxEwQcVvITCoztGUa7QXVnNLnR0Wey2J1nEnFHpahfpOG7Dh1Rn4Eq6XKOpiCNrXDiCre0jh69OFTqq/azsVCoVxjqz7WJ1JJ7QE67TxyvpwXZtkROOUdcqjXfdHXq8ytC31LrAYhkkN+24Z9w8SudtFYnEnErUjFXbFbLrgACXXuiAJJOods4L1tujKjWj2JIBIfIuuOrAHqXKeizk3fcLdWb0WmLOD9Z2RqdgyHevT6p5x4JyZl1u2q1HPtsNfZR/r8lI2yWj/KH31vXUsFlWGLLaN6lwf5ovVbRvUuD/NbkDYmgIMT1Svv0vuv/Mn9Tr79L7r/AMy2wwJ7oQ1imw1x/iUe5r/zJvVK+/S+6/8AMtqAnuhF1ieqV9+l91/mn9Vr71Lg/wA1s3BsSuhDWOLJaNtHvLwhNmtGylxf+VbUBJDWH6taN2l95/5EVOyVXGHCm3sc4mO9oW2AgqMycPabl1jWFU15xpawOovNN2YyO83UVlVqS9I0/o4WinLR+0aJb17Wrgq2w/8AxcOXHK78eWxgWhpSVi2RqSW5WbB8q67DSa0NDSwNIjABuIDe+XR/CsTkpoJ+kbSKQkUmQ6u4fVp7B1uyHedSp2qvUtD202BznPcGtaMS+oYbPgOwL2/kbycbYLOKWBqO6dofvVI/4jIf3XVyjUo0W02Np02hrWgNYBk1oEeCna2E1IT0tuXYpQFA4EprqIBOgYhDdUqaEChIhEkQgihE0J4TtCKaELgpYTEIAaE11SAJigYNQuRpoREMQeo/Ncfyy0VdPPsHQcYqAfVdqd2H59q7Y05Ciq0m1GljwCCC14OuVLNjUuV4raSkr3KfRb7LVNMyWnGm7eZ5jIpljHTWr6IeSeHr9YYvBFmDtTDganach1TtXolsqNa5tImA8mTqIbqnvT2e32ZjQ1tWk1rQA0AwABgAET9J2Y51afFb1yxNzlHD9oOvFLnaW/4tP4qEaTs3vW8UX0pZR/iN+8E0xM6pRjCpJ2KPnG7w4qRmmrHdg1Me3+6qHSln96zimmJzWZvN4hNz7N9vEKH6Ts/vGcVDUtFjd7RontDU0xeFZu8OKfnm7w4rIfS0edbR/C+o35OTer6P3/8Aer/mTTGward5vEJc83eCyDZrBv8A+/X/ADoTZtH75+NaPzpq42OebvDilz7N5vELGFj0fv8AGtaD/wB1PSbYG5c1/MS//kSmjS55m83iE/ON3m8QqzLZZh7L6Q7LoUnr9D3tPi1NFmnaqYzuHtKkbbqW6zuIVdulLNGNRp72ovpOzb7eLFUxbZpCnlgOCp260U2ua9rh0zdI2k5JvX7Nvj/bKQtdlzvt7rg+SqKXK/k+y22eGgCq0XqR+1GR6j5JLQq6SpEQ17B3tTqWLLY8tD/s1Ph1fJEH/Yq/Dq+SgsltaaTapdDSwOknAAiUNLTFMkjpYGJiQZ1yNS5yV0Ww/wCzU+HV8k4f9ir8Or5KRlQESDIORGtHKIhvncq/Dq+Se+dyr8Or5KaU8pohvncq/Dq+SV47lX4dTyU0pk0R3juVfh1PJK873dX4dTyUkpSoAl3u63w6vkmvO3Kvw6vkpJSlURXzuVfh1fJK+dyr8Or5KWUpQRXzuVfh1fJMXHcq/Dq/lU0ppVEJedyp8Or5JjU+zU+HU8lPeSvHagr86NjvuVPJNzzftfdf5KxfO0pjUO0qorms3r4O8klK6qdp4lJUcZom/aNHhjD06ZiBruOkN7wq1DSVSSDOBPRcXMawDH2WwXuzEHqxS9Hlp/e0ux4+R+QXX1LJSeZdTY47SATxWdy4s/2FoiteZMFo+qDAw6hqV+VCwAYDADKMEcqCQFFKilPeQSSlKC8lKApSQylKApSQynlA6dDKUoHTSmlIqhSlKFMUDkoCU5KAlVAvckoLY+GHsjjgkpeWLJrznkfaebtTNlQFh7xI8QvTWrxyz1TTe14+o8O4GV6/RqBwDhkQCO9OfqcfE4TygBRKNCSQhOEQUp5QpwqCSTJIh0k0pSgdJMmlFEmTJkBShJSQkoESgJTkoHFVFLSdWABtKSqaRdL43R4pLN9ajzN69N5K2rnLNTOtrbp7W4LzN48Cuy9H9p6NSluuDh2OEH5eK3z8c+PrswiCBqILDYk6FOqgkk0pSgdOhlKUBSmTSlKB0k0ppRRJk0ppQOShJSJQEqoRKBxSJVe11IYexBlVKsknaSkgASUw1wlobj2rU5G2m5aWjVUaW9+Y+Sz7QMOwqGzVubqNqD6jw7gZXT2MeV6+wo1Xo1JAIyIBHeppXNsUp5QylKA5SlDKUoClKUKUoClKUEp0BSmlNKaUBSmlNKGUDkoSUxKElUJxVHSD8ANqtOKzrUSX9UQgrkQkpITqo4eoJ/mHiqDwrlB0t62qC0Nx7cVqM16HyYtXOWemdbRdPa3BbAK43kHacKlI6iHDsOB+S7AFYvrf8HKeUEp5UBSnlBKUqoOU0oZSlFFKUoZSlQFKUoJSlAUpiUMoSUBEoCUxKElVTOKqkYGe9S13QEDDh1FWM1XfrSRvbwTIPPbO6HdTvmEdpb4HwUIE/PvVh5keCrK1yVtHN2lo1PBae/EeIXojXLydlQscHDNjgR2gyvUbPVDmhwycAR2EKcmuPizKeVFKeVFSXk15BKaUEt5KVHKUoDlKUEppQSSmlBKaUB3kxKAlMXIoiUJKYuQkoIqrpICCk+DGo5dSgrvlydzsv1iqysPOEa0lBTqYY6vFJBwidCnCqIK4Xc8mLTfs7NrJaf5cvCFxVYLoOR9aL9PscPkfwS+E9dYHIryr30/OLLSeUryg51MaqCxeSvKtziXOILF5K8q/OJc4gsXk15V+cS5xFTlyYuUPOJucUE0oKj4BOwIL6httWG9pVFQVJxRc4q9EkSNUyFPIREh28U6G8kmmOKg7E8HYrNxPcTUxWuOPYrdjLqZvMN10ROGSYNUzQpasiw63WiP3h+63yQ+vV/eeDfJM7JRlTa1iX1+v7zwb5Jzb6/vP6W+ShCcppgzpG0e8/pb5ITpG0e8/pb5IE11XUxMbfaPeeDfJMdIV/engzyQgJFiaYIW+v708GeSf1yv713Bvkh5tGGqaYA2uv7139Pklz9b3r/BSCkpLiauIA+sf8V/FXrLejpvc7HC8ZUI2K5TaITTBOKclM4JBqamHlJMUlRhwlCkuJixQAFI1OymrDKSlWIaiAq3Wp4qIsUaqEBEQjuJAKojIThqkLUV1UCGIroRJBQNCaEUoC7aiDaEZCCm8FSAIpNCnY9AymjAQGHSjKhYUcoGe/UkmJCSqM8sSDFGShKIstAUzCFVY1WKTAs1qHqYlBdRwifgioQE8J2hNKIBE1NrTqhFCSUnoZVQ5KEpJ0Q7cFKHqFStCKtNKIhRsKMrLRJyEklUCUyUJKo//2Q==',
+    waterUsage: '23 gallons/load',
+    betterModel: {
+      model: 'Whirlpool WTW8127LW',
+      imageUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0PDQ0NDQ4ODQ0NDQ4NDQ0ODRAODQ0NFREWFxURFRMYHTQhGBoxGxUVITEhMSkrLjAuFyAzODMsNykwLisBCgoKDQ0NFQ8QGjclHyU3LDc3Nzc3NzgyNzcrNzc3Nys3KzgrNzU3NzcvOCw3Nzg3NzcyLTc3KzQtKys3Nzc3K//AABEIAOEA4QMBIgACEQEDEQH/xAAcAAEAAgMBAQEAAAAAAAAAAAAAAQMCBAYHBQj/xABHEAACAQICAgoMDQMFAAAAAAAAAQIDBAUREiEGFRYxMnFykpOyExQiUVRVYWORscHhByMzQUNTYoGClKHR0nN0wiREUqLT/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAQFAwYC/8QAIREBAAIBBAEFAAAAAAAAAAAAAAECAwQRIfAxBRJRYXH/2gAMAwEAAhEDEQA/APcQAAAAAAAACu4rQpwnUqSUKdOMpznJ5RjBLNtvvZICwHDS+E6xcmqdGvOKeqbUIaXlSbz9JdT+EO2l9BV50P3A7MHKR2c27+hqemJYtmdD6qp6YgdODmd2NH6qp6YjdjR+qqemIHTA5ndlQ+qn6YkPZnQ+qqemIHTg5Z7NqC+hqemJVPZ5br6GrzogdcDianwj2sfoK3Oh+5rv4U7JNaVvcJfO49jbX3aQHfA1cMxCjdUKdzbzVSjVjpQks1qzyaae8800130bQAAAAAAAAAAAAAAAAAAADzD4atkjpUqWG0pZVLhdmuMnrjbqWUY/ikn90H3z02c1FOUnkoptt7yS32eA7OKjrXdW/lTVWnWycWlJujBJKMZLS1alv72bYHP21xBLfqeiO+bclWqxXYa0KSTln2StKlKWaWT7lPP5/SV21xQ+qhzZf+hvRu7ZZZ04R3/9vWnnzZsCiFpeJKPbtLOW81cVmlxyUNRs0cPvknnf2/k/1dR/4l0MQtv+MMv7O4/mbEMSte9D8lc/yA1aWG3y1O/t/wA3Ul64m7hVncU5Tde7tqia1Ltqcknn5YkrE7XvQ/JXP8i62vrabaSpZpZ91aXEPXNAVYta1qkYdgurak03pPtqcc1qy3onz62G3uUUr+hmt/8A1dRLe76jrPrXV7bQSzVFZt5aNrcT9VRmtLErXvQ/JXP8gPnVbG90FHt62zWWtXVRN/fkatSxvVHXe0M/7mpvceifWniNrlnlDL+zuf5GtUxC1/4x/KXP8gPl6FanGTqV6dVOKWUa0qj09Jd0k1q1Zr7zQr12z7M7y2eeUIy1Z5dgrR9czRuLqh9VHmS/mB3XwKbJHCvUwurLuK+lWtc3vVorOcFxxWl+GXfPZT83bGFJ3VG5o040u16saqrSU1HSi89Fd3rz3n5HrP0TYXcK9GlXhwKsIzXfWa3n5QNgAAAAAAAAAAAAAAAAAAcx8JOKdq4TdTzylVULeOvL5SSjL/rpP7jwvbz7X6nv2yvDZ3VKNKmqTlCTqfGt6GbjKK3vn1t8aRyD2KYit6jhL43XzA8s22h3oc2JksZj82j6EenvYtiXg2EP8VcjcxiXgmDv8dcDzNY2u+v0J288p6XuaxLwLBukrjc5iXgOC9JXA8029+1+pO3n2v1PStzuJeAYL0lf9yHsexLxfgvS1/3A8128+1+o28+1+p6Utj2JeL8F6Wv+43PYl4BgvSV/3A80278qIeNLvr9D03c7iXgODdJXG5vEvAsG6SuB5g8Xj9n0IxeKU+9DmxPUdzOJeCYOvx1yVsWxLwbCF+KuB5isa+0l957F8EGL9s4dUpt5ytbicN/PuJpTX6ykvuPmrYpiP1GEridc6TYlhFW0nLsqoLs0VF9gcstKLlJZ5+SUlxJAdQAAAAAAAAAAAAAAAAAAPn31DSnnp1IZRisoS0U9b3zVdp52v0nuPoXHCfFH2lDA1Haedr9J7jF2nna/Se422YsDV7U87X6T3DtTztfpPcbJAGt2p52v0nuHanna/Se42T5mJWV3Obnb3borQyVJ0Yzi56+6bevLWtXfQG12p52v0nuHanna/Se40rKyvoyi615GpHTzlBUEnKOepaeerVlnqPrAa3anna/Se4ntTztfpDYJA11aedr9KzJWnna/Sl6MkBQrTztfpWXW9vo1Kb06ktb1TnpLgvXkZozp8Onyn1WBvAAAAAAAAAAAAAAAAAADVuOE+KPtKGX3HCfFH2lDAxZizJmLAggkgAAQBIIAEgBAZIlGKMkBmjOnw6fKfVZgiynw4cp9VgboAAAAAAAAAAAAAAAAAA1bjhPij7Sll1xwnxR9pSwMGYsyZiwMQGAIAAAAASCESBKMkYoyQGcSynw4cp9VlaLKXDhyn1WBugAAAAAAAAAAAAAAAAADVuOE+KPtKWXXHCfFH2lDAxZizJmLAxYDAEAAAAABJBIEoyRijJAZItpcOHKfVZUi2lwocp9VgboAAAAAAAAAAAAAAAAAA1bjhvkx9pRIuuOE+TH2lLAwZizJmLAhkEkAAAAAAAAIDJEoxRkgM0WUeHDjfVZUi2jw4cb6rA3gAAAAAAAAAAAAAAAAABqXHDfJj7Shl1zw3yY+tlLAxZiyWYsAQSQAAAAAgCQQSBJKIRKAzRbR4cOP/FlKLaHDhxvqsDfAAAAAAAAAAAAAAAAAAGnc8N8mPrkUMuuuG+TH1yKGBDMWSyAIAIAkEACSAAAAAklEEgZIuocOHG+qyhF1vw4cb6rA+gAAAAAAAAAAAAAAAAAANG6+UfJj65FDLrv5R8iHrkUMCGQGQAAAAAAAAABAAklGJKAyRdb8OHG+qyhF1t8pDjfVYH0gAAAAAAAAAAAAAAAAAB868fxr5EPXIpZbev41/wBOHrkfLxDEFT7mK0ptZ696K8pyz58eGk3vO0PulLXt7at1g5+OM1NLLShJ/PHJezWfXsruNWOa1SXCj3vcS6b1LBqL+yvE/brl02THG8+GwAC9OEkACSAAABAEggAZIutvlIcb6rKC21fxkON9VgfVAAAAAAAAAAAAAAAAAAHy75/HP+nD1yOI2S2s60qkVKWam32PsjpQrasoxnOK0lHeeSyzyyeo7W+fx8v6cPXI+ViNj2R6cMlPLJp70veZnquDLlxVnFzNZ32734U6W9a2mLeJeaRw5vRjG1p621TlLDo21CU0m3oVKcnVobzynJenPX3WxqlKm9B1J1coSznUac2tJZJtLXlvZ77y16zCGF1dOUtBqUlFSbn3OUc8tWeXzs+zYWipRevOUuE/m4kZejxanNqKWtWa1rzzx3v4qzWx0xzETvMtsEZk5np2YkEDMCQRmMwAIGYAEZjMDIst5fGU+U+qynMRllOny/YwPughPUSAAAAAAAAAAAAAAAABzuP3LoTdXQdROKjox1PU3+5zFXZpovLtG4lxOJ6LVpKS1mvKwh3kB549nb8X3XOiRu8fi6650T0F4bEja2IHn+71+LrrnQG71+LrrnQO/wBrIjaxAcBu+fi6650Bu+fi6650Dv8AayI2siBwG75+LrrnQG71+LrrnQO/2siNrIgcBu9fi6650Bu9fi6650Dv9rIk7WRA8/3ePxddc6A3dPxfdc6J6BtbElYbEDg6ezVy/wBjcrjlE+7hV+7hxapSp6Lzyk83vHQqwh3jYpUIx3kBnT3lxGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//Z',
+      waterUsage: '13 gallons/load',
+      description: 'This washer uses 43% less water per load with adaptive wash technology and earned an Energy Star Most Efficient rating.'
+    }
+  },
+  gdf535psrss: {
+    model: 'GE GDF535PSRSS',
+    type: 'Dishwasher',
+    imageUrl: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRQ_9jebVfkxzlGdoilXZSdVj4chOnt_q8K9goxtJsKi7v7gEECvBUH6W4AxLXKalbI5Y1sZOQY8ND0e1JPU6NcStUib1UwIA_p-osT8e9Gn3xw9xQMEUN_RjpJrWJVnxSUiUfx35aZvzMpLuw&usqp=CAc',
+    waterUsage: '3.6 gallons/cycle',
+    betterModel: {
+      model: 'GE GDT665SMNES',
+      imageUrl: 'data:image/webp;base64,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',
+      waterUsage: '2.4 gallons/cycle',
+      description: 'The GDT665SMNES uses 33% less water per cycle while improving cleaning efficiency and drying power with Dry Boost.'
+    }
+  },
+  wrf555sdfz: {
+    model: 'Whirlpool WRF555SDFZ',
+    type: 'Refrigerator',
+    imageUrl: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQY04pBBjfCEjiOnxofs-LjV-214rvLWLTcDhQz93eI52YUJct97ujZ_iGkJ1dLrABx0vBIHdG_KlFEgI6N39_8yPxFOxyQ5QK9Q0Ih3Lywpu81iN-SSmvoqXIEbT_aex6TydQMBiwjOX2L&usqp=CAc',
+    waterUsage: '7 gallons/day',
+    betterModel: {
+      model: 'LG LFXS26973S',
+      imageUrl: 'https://m.media-amazon.com/images/I/51dCZhsAavL._AC_UF894,1000_QL80_.jpg',
+      waterUsage: '5.2 gallons/day',
+      description: 'The LG LFXS26973S has a more efficient ice and water system, using 25% less water with ENERGY STAR compliance.'
+    }
+  },
+  wa44a3405aw: {
+    model: 'Samsung WA44A3405AW',
+    type: 'Top Load Washer',
+    imageUrl: 'https://image-us.samsung.com/SamsungUS/home/home-appliances/washer-and-dryer-sets/washers/white/WA44A3405AW_01_White_SCOM.jpg?$product-details-jpg$',
+    waterUsage: '22 gallons/load',
+    betterModel: {
+      model: 'LGWT7900HBA',
+      imageUrl: 'data:image/jpeg;base64,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',
+      waterUsage: '12 gallons/load',
+      description: 'The LG WT7900HBA uses 45% less water with TurboWash3D technology and a larger capacity for fewer loads.'
+    }
+  }
+};
+
+export default function ApplianceScanner() {
+  const [modelNumber, setModelNumber] = useState('');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const findBetterModel = () => {
+    const key = modelNumber.trim().toLowerCase();
+    if (!APPLIANCES[key]) {
+      setResult(null);
+      alert('Model not found. Try another one.');
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setResult(APPLIANCES[key]);
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>FlowIQ - Model Number Checker</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Model Number (e.g. RF28R7351SR)"
+        value={modelNumber}
+        onChangeText={setModelNumber}
+        autoCapitalize="characters"
+      />
+
+      <Button title="Find Better Model" onPress={findBetterModel} />
+
+      {loading && <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />}
+
+      {result && (
+        <View style={styles.resultBox}>
+          <Text style={styles.subtitle}>Current Appliance</Text>
+          <Image source={{ uri: result.imageUrl }} style={styles.image} />
+          <Text>Model: {result.model}</Text>
+          <Text>Type: {result.type}</Text>
+          <Text>Water Usage: {result.waterUsage}</Text>
+
+          <Text style={[styles.subtitle, { marginTop: 20 }]}>Better Alternative</Text>
+          <Image source={{ uri: result.betterModel.imageUrl }} style={styles.image} />
+          <Text>Model: {result.betterModel.model}</Text>
+          <Text>Water Usage: {result.betterModel.waterUsage}</Text>
+          <Text>{result.betterModel.description}</Text>
+        </View>
+      )}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    marginTop: 40,
+    flex: 1,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 45,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  resultBox: {
+    padding: 15,
+    backgroundColor: '#e6f2ff',
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  image: {
+    width: '100%',
+    height: 180,
+    resizeMode: 'contain',
+    marginVertical: 10,
+  },
+});

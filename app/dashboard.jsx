@@ -1,70 +1,150 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  Dimensions,
+  ScrollView,
+  ImageBackground,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+
+const { width } = Dimensions.get('window');
 
 const Dashboard = () => {
+  const [isPeakTime, setIsPeakTime] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkPeakTime = () => {
+      const currentHour = new Date().getHours();
+      if ((currentHour >= 6 && currentHour < 9) || (currentHour >= 16 && currentHour < 20)) {
+        setIsPeakTime(true);
+      } else {
+        setIsPeakTime(false);
+      }
+    };
+
+    const interval = setInterval(checkPeakTime, 60000);
+    checkPeakTime();
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
+    <ImageBackground
+      source={{
+        uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1050&q=80',
+      }}
+      style={styles.background}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Flood Area</Text>
-      </TouchableOpacity>
+        {isPeakTime && (
+          <View style={styles.notification}>
+            <Text style={styles.notificationText}>Peak Water Usage Hours</Text>
+          </View>
+        )}
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Shelter</Text>
-      </TouchableOpacity>
+        <Text style={[styles.header, isPeakTime && styles.headerRed]}>Dashboard</Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Alerts</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Suggestions</Text>
-      </TouchableOpacity>
-
-      <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.sectionsButton}>
-          <Text style={styles.buttonText}>Sections</Text>
+        <TouchableOpacity
+          style={[styles.fullWidthButton, isPeakTime && styles.buttonRed]}
+          onPress={() => router.push('/tracker')}
+        >
+          <Text style={styles.buttonText}>Expense Tracker</Text>
         </TouchableOpacity>
-      </View>
-    </View>
-  )
-}
 
-export default Dashboard
+        <TouchableOpacity
+          style={[styles.fullWidthButton, isPeakTime && styles.buttonRed]}
+          onPress={() => router.push('/comparison')}
+        >
+          <Text style={styles.buttonText}>Compare Products</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.fullWidthButton, isPeakTime && styles.buttonRed]}
+          onPress={() => router.push('/weatherscreen')}
+        >
+          <Text style={styles.buttonText}>Alerts</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.fullWidthButton, isPeakTime && styles.buttonRed]}
+          onPress={() => router.push('/rebatesfinder')}
+        >
+          <Text style={styles.buttonText}>Tools</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.fullWidthButton, isPeakTime && styles.buttonRed]}
+          onPress={() => router.push('/tips')}
+        >
+          <Text style={styles.buttonText}>Water-Saving Tips</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </ImageBackground>
+  );
+};
+
+export default Dashboard;
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'flex-start',
-    backgroundColor: '#fff',
+    width: '100%',
+    height: '100%',
   },
-  title: {
-    fontSize: 24,
+  container: {
+    paddingVertical: 150,
+    paddingHorizontal: 24,
+    minHeight: '100%',
+    backgroundColor: 'rgba(224, 247, 250, 0.8)',
+  },
+  notification: {
+    backgroundColor: 'red',
+    padding: 10,
     marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#3498db',
-    padding: 15,
-    marginVertical: 8,
-    borderRadius: 10,
+    borderRadius: 5,
     alignItems: 'center',
+  },
+  notificationText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  header: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: '#3498db',
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  headerRed: {
+    color: 'red',
+  },
+  fullWidthButton: {
+    backgroundColor: '#3498db',
+    paddingVertical: 18,
+    borderRadius: 16,
+    marginBottom: 20,
+    alignItems: 'center',
+    width: '100%',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 3 },
+  },
+  buttonRed: {
+    backgroundColor: 'red',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: '600',
   },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 20,
-  },
-  sectionsButton: {
-    backgroundColor: '#2ecc71',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-})
+});
