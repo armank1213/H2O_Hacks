@@ -41,3 +41,6 @@ firebaseConfig.jsx
 
 # OpenAI key
 key.env
+
+# Weather API key
+weatherutils.jsx
